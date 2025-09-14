@@ -1,0 +1,30 @@
+warning: Some design elements have no explicit time unit and/or
+      : time precision. This may cause confusing timing results.
+      : Affected design elements are:
+      :   -- module vending_machine declared here: design.sv:5
+VCD info: dumpfile dump.vcd opened for output.
+TIME=0 | STATE=0 | COIN=0 | DISPENSE=0 | CHANGE=0
+TIME=20000 | STATE=0 | COIN=1 | DISPENSE=0 | CHANGE=0
+TIME=25000 | STATE=1 | COIN=1 | DISPENSE=0 | CHANGE=0
+TIME=30000 | STATE=1 | COIN=0 | DISPENSE=0 | CHANGE=0
+TIME=40000 | STATE=1 | COIN=10 | DISPENSE=0 | CHANGE=0
+TIME=45000 | STATE=11 | COIN=10 | DISPENSE=1 | CHANGE=0
+Test1 PASS: Dispense triggered at                50000
+TIME=50000 | STATE=11 | COIN=0 | DISPENSE=1 | CHANGE=0
+TIME=55000 | STATE=0 | COIN=0 | DISPENSE=0 | CHANGE=0
+TIME=60000 | STATE=0 | COIN=10 | DISPENSE=0 | CHANGE=0
+TIME=65000 | STATE=10 | COIN=10 | DISPENSE=1 | CHANGE=1
+TIME=70000 | STATE=10 | COIN=0 | DISPENSE=0 | CHANGE=0
+TIME=80000 | STATE=10 | COIN=10 | DISPENSE=1 | CHANGE=1
+Test2 PASS: Dispense+Change at                81000
+TIME=85000 | STATE=0 | COIN=10 | DISPENSE=0 | CHANGE=0
+TIME=90000 | STATE=0 | COIN=0 | DISPENSE=0 | CHANGE=0
+TIME=100000 | STATE=0 | COIN=10 | DISPENSE=0 | CHANGE=0
+TIME=105000 | STATE=10 | COIN=10 | DISPENSE=1 | CHANGE=1
+TIME=110000 | STATE=10 | COIN=0 | DISPENSE=0 | CHANGE=0
+TIME=120000 | STATE=10 | COIN=1 | DISPENSE=0 | CHANGE=0
+TIME=125000 | STATE=11 | COIN=1 | DISPENSE=1 | CHANGE=0
+Test3 PASS: Dispense triggered at               130000
+TIME=130000 | STATE=11 | COIN=0 | DISPENSE=1 | CHANGE=0
+TIME=135000 | STATE=0 | COIN=0 | DISPENSE=0 | CHANGE=0
+testbench.sv:85: $finish called at 180000 (1ps)
