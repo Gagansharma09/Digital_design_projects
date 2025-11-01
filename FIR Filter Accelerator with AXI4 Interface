@@ -1,0 +1,96 @@
+4. FIR Filter Accelerator with AXI4 Interface 
+• Designed configurable 8–64 tap FIR filter accelerator with AXI4-Lite interface.
+• Achieved 4× performance gain over software implementation; validated using Python golden mode
+I wanna do this project give me step wise step how to lean about it how to start and how to execute and Cora z7 work for it ?
+
+Prerequisites (what you must know first)
+	1.	Signals & systems basics (FIR fundamentals).
+	2.	Fixed-point arithmetic and quantization (Q-formats).
+	3.	RTL coding in Verilog or SystemVerilog (synthesizable).
+	4.	AXI protocol basics: AXI4-Lite (control/status), AXI4-Stream or AXI4 memory-mapped (data path).
+	5.	Vivado/ Vitis toolflow (block design, IP integrator, export hardware).
+	6.	Linux/bare-metal software on Zynq PS (to drive the accelerator).
+	7.	Python or MATLAB for a golden model and verification.
+
+If any of these are weak, allocate 1–2 weeks to shore them up.
+Learning resources (start here)
+	•	Digilent Cora Z7 board docs & reference manual (specs, PS/PL details).  ￼
+	•	Xilinx AXI Interconnect and AXI IP product guides (for correct AXI wiring).  ￼
+	•	Vivado & Vitis tutorials (AMP/PS-PL examples) — available on Digilent/Xilinx sites (use Vivado ML Standard / Vitis).  ￼
+	•	Fixed-point & DSP basics: any textbook or online notes; MATLAB’s Fixed-Point Designer docs are useful.
+High-level architecture (must decide upfront)
+	•	Control interface: AXI4-Lite slave mapped registers (start, stop, num_taps, coeff base addr, status).
+	•	Data interface options (choose one):
+	•	Option A: AXI4-Stream for streaming samples in/out (good for continuous high-rate data).
+	•	Option B: AXI4 memory-mapped master to read/write DDR (use AXI DMA or an AXI master in PL) — simpler for block processing.
+	•	For many projects the simplest robust choice: AXI4-Lite for control + AXI4-Stream for data and/or use Xilinx AXI DMA between PS DDR and your streaming IP.
+	•	FIR core internal: parameterizable N taps (8 to 64), multiply-accumulate (MAC) datapath, shift register for samples, coefficient memory (BRAM or reg file), fixed-point multiply, pipelining to meet timing.
+
+⸻
+Detailed execution plan & steps
+
+Phase 0 — project setup (1–2 days)
+	1.	Install tools: Vivado (supports Cora Z7), Vitis (for software), and Python+numpy.  ￼
+	2.	Obtain Cora Z7 board files and reference design.  ￼
+
+Phase 1 — golden model & spec (3–7 days)
+	1.	Golden model in Python or MATLAB:
+	•	Implement parameterizable FIR (N taps), fixed-point simulation support.
+	•	Add test vectors (sine, step, real biosignal sample like ECG) and compute reference outputs.
+	•	Measure software baseline throughput on host CPU (ARM will be used later).
+	2.	Decide fixed-point format:
+	•	Choose input sample width (e.g., 16-bit), coefficient width (e.g., 16-bit), accum width (e.g., 32-bit).
+	•	Simulate quantization error; tune word-lengths until SNR/MAE acceptable.
+
+Deliverable: specs doc (taps range, clock target, data interface choice, word lengths, throughput target).
+
+Phase 2 — RTL FIR core (1–2 weeks)
+	1.	Implement a parameterized Verilog/SystemVerilog FIR core:
+	•	Parameters: TAPS (8..64), DATA_W, COEFF_W, ACC_W, and PIPELINE_DEPTH.
+	•	Use a shift-register sample buffer and combinational or pipelined MAC tree. For high throughput, use pipelined multiply-accumulate with DSP48 usage.
+	•	Coefficient memory: BRAM/ROM configurable via init or AXI register writes.
+	2.	Add internal AXI-Stream interfaces if you chose streaming: s_axis_tdata, s_axis_tvalid, m_axis_tdata, m_axis_tvalid.
+	3.	Add an AXI4-Lite slave register file wrapper (separate module) to control:
+	•	Control reg (start/stop)
+	•	Status reg (busy/done)
+	•	Num_taps reg
+	•	Coeff base address/reg interface (if you want to write coefficients from PS)
+	•	Optional: sample rate, reset, etc.
+
+Minimal register map example (AXI4-Lite):
+	•	0x00: CONTROL (bit0=start, bit1=interrupt_enable)
+	•	0x04: STATUS (bit0=busy)
+	•	0x08: NUM_TAPS (8..64)
+	•	0x0C: COEFF_BASE_ADDR (if coeff in DDR) or direct per-tap write region
+
+Provide clear handshakes for starting and completion.
+
+Phase 3 — verification (1–2 weeks)
+	1.	Unit test benches for FIR core:
+	•	Feed random sequences, compare outputs to golden model.
+	•	Sweep num_taps and fixed-point widths.
+	2.	AXI wrapper testbench:
+	•	Model AXI4-Lite master to write control regs then feed samples via AXI-Stream.
+	•	Validate status and interrupt flow.
+	3.	Use cocotb (Python) or SystemVerilog testbench to automate and compare against golden model.
+	4.	When tests pass, run synthesis on Vivado to estimate resource usage.
+
+Phase 4 — hardware integration (Vivado block design) (3–5 days)
+	1.	Create a Vivado block design:
+	•	Add Zynq PS, enable required interfaces (AXI GP master/slave, DDR).
+	•	Add AXI Interconnect for your AXI4-Lite slave (control) and AXI DMA if using DDR transfers.  ￼
+	•	Add your FIR IP (packaged as IP in Vivado) connected to PL clocks and AXI wires.
+	2.	Configure PS clocks and DDR interface. Export hardware platform.
+
+Phase 5 — software / driver (3–7 days)
+	1.	Bare-metal or Linux user space:
+	•	If Linux: write a simple userspace program to mmap device registers or use UIO/driver and use AXI-DMA to transfer blocks.
+	•	If bare-metal: use Xilinx SDK/Vitis to write code that writes control registers and streams data via DMA.
+	2.	Implement software golden comparison: send input block, read output block, compute error vs Python golden model.
+
+Phase 6 — board bring-up & testing (3–5 days)
+	1.	Program FPGA (bitstream), boot board (Linux or bare-metal). Use JTAG or microSD.
+	2.	Run test data through accelerator, validate correctness, collect timing logs.
+	3.	Measure throughput and latency:
+	•	Throughput = samples processed / wall time.
+	•	Compare with software running on ARM core (same fixed point and algorithm) to get speedup factor.
