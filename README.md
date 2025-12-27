@@ -1,4 +1,4 @@
-# Digital Design Projects (Verilog / SystemVerilog)
+Digital Design Projects (Verilog / SystemVerilog)
 
 This repository contains a curated collection of RTL design and verification projects implemented using Verilog and SystemVerilog. Each project follows a structured layout with separate folders for design source files, testbench files, and simulation outputs.
 
