@@ -1,16 +1,17 @@
-# Allocation: Simulator allocated 4670 kB (elbread=427 elab2=4108 kernel=134 sdf=0)
-# KERNEL: ASDB file was created in location /home/runner/dataset.asdb
-# KERNEL: t=0,in1=0,in2=0,sum=0,carry=0
-# KERNEL: t=10,in1=0,in2=1,sum=1,carry=0
-# KERNEL: t=20,in1=1,in2=0,sum=1,carry=0
-# KERNEL: t=30,in1=1,in2=1,sum=0,carry=1
-# KERNEL: t=40,in1=0,in2=0,sum=1,carry=0
-# KERNEL: t=50,in1=0,in2=1,sum=0,carry=1
-# KERNEL: t=60,in1=1,in2=0,sum=0,carry=1
-# KERNEL: t=70,in1=1,in2=1,sum=1,carry=1
-# RUNTIME: Info: RUNTIME_0068 testbench.sv (33): $finish called.
-# KERNEL: Time: 80 ns, Iteration: 0, Instance: /full_adder_tb, Process:
-@INITIAL#24_1@.
-# KERNEL: stopped at time: 80 ns
-# VSIM: Simulation has finished. There are no more test vectors to simulate.
-# VSIM: Simulation has finished.
+# Full Adder — Simulation Results
+
+The following table summarizes the waveform values captured during RTL
+simulation. The design behaves as expected for all truth-table cases.
+
+| Time (ns) | in1 | in2 | sum | carry |
+|----------:|----:|----:|----:|------:|
+| 0  | 0 | 0 | 0 | 0 |
+| 10 | 0 | 1 | 1 | 0 |
+| 20 | 1 | 0 | 1 | 0 |
+| 30 | 1 | 1 | 0 | 1 |
+| 40 | 0 | 0 | 1 | 0 |
+| 50 | 0 | 1 | 0 | 1 |
+| 60 | 1 | 0 | 0 | 1 |
+| 70 | 1 | 1 | 1 | 1 |
+
+ Simulation completed successfully at 80 ns.
