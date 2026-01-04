@@ -1,12 +1,5 @@
 `timescale 1ns/1ps
-//------------------------------------------------------------
-// MULTI-CHANNEL EMA-BASED OUTLIER DETECTION ENGINE (FPGA-SAFE)
-// Deterministic 2-cycle latency, DSP-mapped, timing-clean
-//------------------------------------------------------------
 
-//------------------------------------------------------------
-// 1) SENSOR SAMPLE GENERATOR (dummy input source)
-//------------------------------------------------------------
 module sensor_reader_u (
     input  wire clk,
     input  wire rst_n,
