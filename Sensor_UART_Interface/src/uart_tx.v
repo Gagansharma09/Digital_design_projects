@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 //==============================================================
 // UART TRANSMITTER
 //==============================================================
@@ -60,6 +62,7 @@ module uart_tx #(
           if (tick_cnt == TICKS_PER_BIT-1) begin
             tick_cnt <= 0;
             shifter <= shifter >> 1;
+
             if (bit_cnt == 7) begin
               bit_cnt <= 0;
               state <= STOP;
@@ -108,8 +111,12 @@ module uart_rx #(
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      state <= IDLE;
-      valid <= 0;
+      state    <= IDLE;
+      valid    <= 0;
+      tick_cnt <= 0;
+      bit_cnt  <= 0;
+      shifter  <= 0;
+      data_out <= 0;
     end else begin
       valid <= 0;
 
@@ -164,7 +171,7 @@ endmodule
 
 
 //==============================================================
-// UART TOP-LEVEL WRAPPER
+// UART TOP-LEVEL (TX + RX)
 //==============================================================
 module uart_top #(
   parameter CLK_FREQ  = 100000000,
