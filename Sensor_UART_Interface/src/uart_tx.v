@@ -1,3 +1,6 @@
+//==============================================================
+// UART TRANSMITTER
+//==============================================================
 module uart_tx #(
   parameter CLK_FREQ  = 100000000,
   parameter BAUD_RATE = 115200
@@ -20,16 +23,15 @@ module uart_tx #(
   typedef enum logic [1:0] {IDLE, START, DATA, STOP} state_t;
   state_t state;
 
-  // default
   assign busy = (state != IDLE);
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      state   <= IDLE;
-      tx      <= 1'b1;
-      tick_cnt<= 0;
-      bit_cnt <= 0;
-      done    <= 0;
+      state    <= IDLE;
+      tx       <= 1;
+      tick_cnt <= 0;
+      bit_cnt  <= 0;
+      done     <= 0;
     end else begin
       done <= 0;
 
@@ -39,8 +41,8 @@ module uart_tx #(
           tx <= 1;
           if (start) begin
             shifter <= data_in;
-            state   <= START;
-            tick_cnt<= 0;
+            state    <= START;
+            tick_cnt <= 0;
           end
         end
 
@@ -81,6 +83,9 @@ module uart_tx #(
 endmodule
 
 
+//==============================================================
+// UART RECEIVER
+//==============================================================
 module uart_rx #(
   parameter CLK_FREQ  = 100000000,
   parameter BAUD_RATE = 115200
@@ -112,7 +117,7 @@ module uart_rx #(
 
         IDLE: begin
           if (!rx) begin
-            tick_cnt <= TICKS_PER_BIT/2; // mid-bit sample
+            tick_cnt <= TICKS_PER_BIT/2;
             state <= START;
           end
         end
@@ -131,7 +136,7 @@ module uart_rx #(
 
         DATA: begin
           if (tick_cnt == 0) begin
-            shifter <= {rx, shifter[7:1]}; // LSB first
+            shifter <= {rx, shifter[7:1]};
             tick_cnt <= TICKS_PER_BIT-1;
 
             if (bit_cnt == 7)
@@ -158,3 +163,51 @@ module uart_rx #(
 endmodule
 
 
+//==============================================================
+// UART TOP-LEVEL WRAPPER
+//==============================================================
+module uart_top #(
+  parameter CLK_FREQ  = 100000000,
+  parameter BAUD_RATE = 115200
+)(
+  input  logic clk,
+  input  logic rst_n,
+
+  // TX
+  input  logic        tx_start,
+  input  logic [7:0]  tx_data,
+  output logic        tx_busy,
+  output logic        tx_done,
+  output logic        tx,
+
+  // RX
+  input  logic        rx,
+  output logic [7:0]  rx_data,
+  output logic        rx_valid
+);
+
+  uart_tx #(
+    .CLK_FREQ (CLK_FREQ),
+    .BAUD_RATE(BAUD_RATE)
+  ) u_tx (
+    .clk     (clk),
+    .rst_n   (rst_n),
+    .start   (tx_start),
+    .data_in (tx_data),
+    .tx      (tx),
+    .busy    (tx_busy),
+    .done    (tx_done)
+  );
+
+  uart_rx #(
+    .CLK_FREQ (CLK_FREQ),
+    .BAUD_RATE(BAUD_RATE)
+  ) u_rx (
+    .clk      (clk),
+    .rst_n    (rst_n),
+    .rx       (rx),
+    .data_out (rx_data),
+    .valid    (rx_valid)
+  );
+
+endmodule
