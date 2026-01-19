@@ -1,0 +1,32 @@
+xrun: 23.09-s001: (c) Copyright 1995-2023 Cadence Design Systems, Inc.
+	Top level design units:
+		tb_sync_fifo
+Loading snapshot worklib.tb_sync_fifo:sv .................... Done
+xcelium> source /xcelium23.09/tools/xcelium/files/xmsimrc
+xcelium> run
+RESET DONE
+Writing data into FIFO...
+WRITE: 00000010
+WRITE: 00000011
+WRITE: 00000012
+WRITE: 00000013
+WRITE: 00000014
+WRITE: 00000015
+WRITE: 00000016
+WRITE: 00000017
+FIFO FULL detected correctly
+Reading data from FIFO...
+READ: 00
+READ: 10
+READ: 11
+READ: 12
+READ: 13
+READ: 14
+READ: 15
+READ: 16
+Testing simultaneous read/write...
+SIMULTANEOUS RW TEST DONE
+TEST PASSED
+Simulation complete via $finish(1) at time 355 NS + 0
+./testbench.sv:114         $finish;
+xcelium> exit
