@@ -261,3 +261,124 @@ void loop() {
         delay(1000); // 1 second between patterns
     }
 }
+
+
+//fpga based rx code 
+      module fpga_uart_rx(
+    input  wire clk,
+    input  wire rst_n,
+    input  wire uart_rx,
+    
+    output reg led0_r,
+    output reg led0_g,
+    output reg led0_b,
+    output reg led1_r,
+    output reg led1_g,
+    output reg led1_b
+);
+
+    localparam CLK_FREQ = 100_000_000;
+    localparam BAUD_RATE = 115_200;
+    localparam CLKS_PER_BIT = CLK_FREQ / BAUD_RATE;
+    localparam CLKS_PER_HALF_BIT = CLKS_PER_BIT / 2;
+    
+    reg [9:0] clk_cnt;
+    reg [2:0] bit_idx;
+    reg [7:0] rx_data;
+    reg [1:0] state;
+    reg [1:0] sync_reg;
+    
+    wire uart_rx_sync;
+    assign uart_rx_sync = sync_reg[1];
+    
+    localparam [1:0] IDLE  = 2'b00;
+    localparam [1:0] START = 2'b01;
+    localparam [1:0] DATA  = 2'b10;
+    localparam [1:0] STOP  = 2'b11;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            sync_reg <= 2'b11;
+        end else begin
+            sync_reg <= {sync_reg[0], uart_rx};
+        end
+    end
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state <= IDLE;
+            clk_cnt <= 10'd0;
+            bit_idx <= 3'd0;
+            rx_data <= 8'd0;
+            
+            led0_r <= 1'b0;
+            led0_g <= 1'b0;
+            led0_b <= 1'b0;
+            led1_r <= 1'b0;
+            led1_g <= 1'b0;
+            led1_b <= 1'b0;
+            
+        end else begin
+            case (state)
+                IDLE: begin
+                    clk_cnt <= 10'd0;
+                    bit_idx <= 3'd0;
+                    
+                    if (uart_rx_sync == 1'b0) begin
+                        state <= START;
+                    end
+                end
+                
+                START: begin
+                    if (clk_cnt == CLKS_PER_HALF_BIT - 1) begin
+                        clk_cnt <= 10'd0;
+                        
+                        if (uart_rx_sync == 1'b0) begin
+                            state <= DATA;
+                        end else begin
+                            state <= IDLE;
+                        end
+                    end else begin
+                        clk_cnt <= clk_cnt + 10'd1;
+                    end
+                end
+                
+                DATA: begin
+                    if (clk_cnt == CLKS_PER_BIT - 1) begin
+                        clk_cnt <= 10'd0;
+                        rx_data[bit_idx] <= uart_rx_sync;
+                        
+                        if (bit_idx == 3'd7) begin
+                            state <= STOP;
+                        end else begin
+                            bit_idx <= bit_idx + 3'd1;
+                        end
+                    end else begin
+                        clk_cnt <= clk_cnt + 10'd1;
+                    end
+                end
+                
+                STOP: begin
+                    if (clk_cnt == CLKS_PER_BIT - 1) begin
+                        clk_cnt <= 10'd0;
+                        
+                        if (uart_rx_sync == 1'b1) begin
+                            led0_r <= rx_data[0];
+                            led0_g <= rx_data[1];
+                            led0_b <= rx_data[2];
+                            led1_r <= rx_data[3];
+                            led1_g <= rx_data[4];
+                            led1_b <= rx_data[5];
+                        end
+                        
+                        state <= IDLE;
+                    end else begin
+                        clk_cnt <= clk_cnt + 10'd1;
+                    end
+                end
+                
+                default: state <= IDLE;
+            endcase
+        end
+    end
+endmodule
