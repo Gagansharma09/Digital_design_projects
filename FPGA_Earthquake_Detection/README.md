@@ -37,8 +37,8 @@ DESIGN FLOW:
 
 FILES:
 ------
-- design.sv      : FSM-based seismic detection logic
-- testbench.sv   : Randomized verification testbench
+FSM-based seismic detection logic
+Randomized verification testbench
 
 HOW TO RUN:
 -----------
