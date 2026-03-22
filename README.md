@@ -83,38 +83,13 @@ Concepts Covered:
 
 ------------------------------------------------------------
 
-4. FIR Filter Accelerator (AXI4-Based)
-
-Description:
-Hardware accelerator implementation of a FIR filter with an AXI4-Lite interface.
-
-Folder:
-FIR_Filter_AXI/
-
-Files:
-- src/fir_axi_accelerator.v
-- tb/
-- sim/
-
-Concepts Covered:
-- DSP hardware architecture
-- Pipelining concepts
-- AXI-based RTL integration
-
-Note: Testbench and simulation are work in progress.
-
-------------------------------------------------------------
-
 Simulation and Tools
 
 Simulations are performed using:
-- ModelSim / Questa
 - Xilinx Vivado Simulator
-- EDA Playground (for quick functional checks)
+- EDA Playground 
 
 Waveforms and logs are stored inside the respective sim/ directories.
-
-------------------------------------------------------------
 
 Learning Outcomes
 
@@ -125,17 +100,3 @@ This repository demonstrates skills and experience in:
 - FSM design and validation
 - Digital arithmetic and logic circuits
 - Clean and modular project organization
-
-------------------------------------------------------------
-
-Future Enhancements
-
-Planned upcoming additions:
-- Multiplier / ALU
-- UART transmitter and receiver
-- FIFO (synchronous and asynchronous)
-- SPI / I2C controller
-- Parameterized design variants
-- FPGA implementation and timing reports
-
-------------------------------------------------------------
