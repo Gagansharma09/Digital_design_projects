@@ -14,11 +14,10 @@ Repository Structure
 
 Each project is organized as:
 
-project_name/
-│
-├── src/      -> RTL design files (.v)
-├── tb/       -> SystemVerilog testbench files (.sv)
-└── sim/      -> Simulation waveforms and logs
+project_name
+1src      -> RTL design files (.v)
+2tb       -> SystemVerilog testbench files (.sv)
+3sim     -> Simulation waveforms and logs
 
 ------------------------------------------------------------
 
