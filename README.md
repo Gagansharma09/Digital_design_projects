@@ -1,102 +1,182 @@
-Digital Design Projects (Verilog / SystemVerilog)
+# Digital Design Projects — Verilog / SystemVerilog
 
-This repository contains a curated collection of RTL design and verification projects implemented using Verilog and SystemVerilog. Each project follows a structured layout with separate folders for design source files, testbench files, and simulation outputs.
+**Author:** Gagan Sharma (`Gagansharma09`)  
+**Institute:** IIT Madras — BS Electronic Systems  
+**Tools:** Xilinx Vivado · EDA Playground · ModelSim  
+**Languages:** Verilog · SystemVerilog
 
-The objective of this repository is to demonstrate capability in:
-- RTL design
-- Testbench development
-- Simulation and debugging
-- Digital logic and architecture fundamentals
+---
 
-------------------------------------------------------------
+## Overview
 
-Repository Structure
+A curated collection of RTL design and verification projects spanning combinational logic, sequential circuits, FSM design, UART communication, FIFO memory architecture, and FPGA-based sensor systems. Each project follows a consistent structure with separate source, testbench, and simulation directories.
 
-Each project is organized as:
+---
 
-project_name
-1src      -> RTL design files (.v)
-2tb       -> SystemVerilog testbench files (.sv)
-3sim     -> Simulation waveforms and logs
+## Repository Structure
 
-------------------------------------------------------------
+Every project follows this layout:
 
-Projects Included
+```
+project_name/
+├── src/        # RTL design files (.v / .sv)
+├── tb/         # SystemVerilog testbench files (.sv)
+└── sim/        # Simulation waveforms, logs, and results
+```
 
-1. Full Adder
+---
 
-Description:
-Digital full-adder circuit performing bit-wise addition with carry propagation.
+## Projects
 
-Folder:
-Full_Adder/
+| # | Project | Category | Language | Status |
+|---|---------|----------|----------|--------|
+| 1 | [Half Adder](#1-half-adder) | Combinational Logic | Verilog | ✅ Complete |
+| 2 | [Full Adder](#2-full-adder) | Combinational Logic | Verilog | ✅ Complete |
+| 3 | [Vending Machine Controller](#3-vending-machine-controller-fsm) | FSM / Sequential | SystemVerilog | ✅ Complete |
+| 4 | [Synchronous FIFO](#4-synchronous-fifo) | Memory Architecture | SystemVerilog | ✅ Complete |
+| 5 | [Sensor UART Interface](#5-sensor-uart-interface) | Communication Protocol | SystemVerilog | ✅ Complete |
+| 6 | [Sensor Outlier Detection System](#6-sensor-outlier-detection-system) | Signal Processing / RTL | SystemVerilog | ✅ Complete |
+| 7 | [FPGA Earthquake Detection](#7-fpga-earthquake-detection) | FPGA / Sensor Fusion | Verilog | ✅ Complete |
 
-Files:
-- src/Full_adder.v
-- tb/Full_adder.tb.sv
-- sim/FA.simu
+---
 
-Concepts Covered:
-- Combinational logic
-- Carry operation
-- Testbench stimulus and monitoring
+## 1. Half Adder
 
-------------------------------------------------------------
+**Category:** Combinational Logic  
+**Folder:** `Half_Adder/`
 
-2. Half Adder
+A fundamental arithmetic building block that computes the 1-bit binary sum and carry of two input bits.
 
-Description:
-Basic arithmetic building block producing sum and carry outputs.
+**Files:**
+- `src/Hf_adder.v` — RTL design
+- `tb/Hf_tb.sv` — Testbench
+- `sim/Hf_tb_simu` — Simulation output
 
-Folder:
-Half_Adder/
+**Concepts:** Boolean logic · Gate-level design · XOR/AND operations · Basic verification
 
-Files:
-- src/Hf_adder.v
-- tb/Hf_tb.sv
-- sim/Hf_tb_simu
+---
 
-Concepts Covered:
-- Boolean equations
-- Gate-level design
-- Basic verification
+## 2. Full Adder
 
-------------------------------------------------------------
+**Category:** Combinational Logic  
+**Folder:** `Full_Adder/`
 
-3. Vending Machine Controller (FSM)
+Extends the Half Adder to support a carry-in bit, enabling multi-bit ripple carry addition when cascaded.
 
-Description:
-Finite State Machine–based vending machine controller handling coin input and product dispense logic.
+**Files:**
+- `src/Full_adder.v` — RTL design
+- `tb/Full_adder.tb.sv` — Testbench
+- `sim/FA.simu` — Simulation output
 
-Folder:
-Vending_Machine/
+**Concepts:** Carry propagation · Combinational logic · Testbench stimulus and monitoring
 
-Files:
-- src/Vending_Machine.v
-- tb/VM_testbench.sv
-- sim/Simulation results
+---
 
-Concepts Covered:
-- Mealy/Moore FSM design
-- State transition logic
-- Scenario-based verification
+## 3. Vending Machine Controller (FSM)
 
-------------------------------------------------------------
+**Category:** Finite State Machine / Sequential Logic  
+**Folder:** `Vending_Machine/`
 
-Simulation and Tools
+A behavioral FSM-based vending machine controller. Handles coin insertion sequences, accumulates value, dispenses the selected product, and returns change when applicable.
 
-Simulations are performed using:
-- Xilinx Vivado Simulator
-- EDA Playground 
+**Files:**
+- `src/Vending_Machine.v` / `UVM.sv` — RTL and UVM design
+- `tb/VM_testbench.sv` — Scenario-based testbench
+- `sim/` — Simulation results and waveforms
 
-Waveforms and logs are stored inside the respective sim/ directories.
+**Concepts:** Mealy/Moore FSM · State transition logic · One-hot encoding · UVM methodology · Scenario-based verification
 
-Learning Outcomes
+---
 
-This repository demonstrates skills and experience in:
-- RTL coding best practices
-- Structural and behavioral modeling
-- SystemVerilog-based verification
-- FSM design and validation
-- Digital arithmetic and logic circuits
-- Clean and modular project organization
+## 4. Synchronous FIFO
+
+**Category:** Memory Architecture  
+**Folder:** `Sync_FIFO/`
+
+A parameterized synchronous First-In First-Out (FIFO) buffer with configurable depth and data width. Includes full/empty flag logic and overflow/underflow protection.
+
+**Files:**
+- `src/` — RTL design (parameterized FIFO)
+- `tb/` — SystemVerilog testbench with directed and random tests
+- `sim/` — Simulation waveforms and results
+
+**Concepts:** Circular buffer · Read/write pointer management · Full/empty flag generation · Parameterized RTL · Synchronous design
+
+---
+
+## 5. Sensor UART Interface
+
+**Category:** Communication Protocol  
+**Folder:** `Sensor_UART_Interface/`
+
+A UART transmitter and receiver module for interfacing a sensor with a host processor over a serial communication link. Implements standard 8N1 UART framing (8 data bits, no parity, 1 stop bit).
+
+**Files:**
+- `src/` — UART TX/RX RTL modules
+- `tb/` — SystemVerilog testbench
+- `sim/` — Waveforms and timing analysis
+
+**Concepts:** UART protocol · Baud rate generation · Serial framing · Clock domain considerations · Sensor data packetization
+
+---
+
+## 6. Sensor Outlier Detection System
+
+**Category:** Signal Processing / RTL  
+**Folder:** `Sensor_Outlier_Detection_system/`
+
+An RTL-based system that continuously monitors sensor data and flags anomalous readings (outliers) that exceed a configurable threshold. Designed for real-time hardware deployment.
+
+**Files:**
+- `src/` — RTL detection logic
+- `tb/` — SystemVerilog testbench with normal and outlier stimulus
+- `sim/` — Simulation waveforms
+
+**Concepts:** Threshold-based detection · Real-time data monitoring · Parameterized comparators · Hardware anomaly detection · RTL pipeline
+
+---
+
+## 7. FPGA Earthquake Detection
+
+**Category:** FPGA / Sensor Fusion  
+**Folder:** `FPGA_Earthquake_Detection/`
+
+An FPGA-based earthquake detection system that processes accelerometer sensor data in real time. Detects seismic events by analyzing vibration patterns, thresholding acceleration magnitude, and triggering an alert output.
+
+**Files:**
+- `src/` — Top-level RTL and detection modules
+- `tb/` — Testbench with simulated seismic waveforms
+- `sim/` — Simulation results and waveform captures
+
+**Concepts:** FPGA sensor interfacing · Accelerometer data processing · Magnitude thresholding · Alert/interrupt generation · Real-time RTL systems
+
+---
+
+## Simulation Tools
+
+| Tool | Purpose |
+|------|---------|
+| Xilinx Vivado Simulator | Primary simulation and synthesis |
+| EDA Playground | Online simulation for quick tests |
+| ModelSim | Waveform analysis and debugging |
+
+---
+
+## Skills Demonstrated
+
+- RTL coding in Verilog and SystemVerilog
+- Structural, dataflow, and behavioral modeling
+- FSM design (Mealy and Moore)
+- SystemVerilog testbench development
+- UVM methodology (Vending Machine)
+- UART serial communication protocol
+- FIFO memory architecture
+- FPGA sensor interfacing and real-time processing
+- Clean, modular, parameterized design practices
+
+---
+
+## Connect
+
+- **GitHub:** [Gagansharma09](https://github.com/Gagansharma09)
+- **Institute:** IIT Madras — BS Electronic Systems
