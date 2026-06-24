@@ -86,6 +86,127 @@ module uart_tx #(
 endmodule
 
 
+
+
+// Code your design here
+// Code your design here new code design 
+module uart_tx(
+       input  logic clk,
+       input  logic rst_n,
+       input  logic [7:0]data_in,//8 but data 
+       input  logic tx_start,
+       output logic tx_busy,
+       output logic tx_done,
+       output logic tx);
+ //internal signal dicalartion 
+       logic [7:0]shifter ;
+       logic [2:0]bit_cnt;
+       logic [15:0]baud_cnt;
+       logic baud_tick;
+        
+ //states  
+  typedef enum logic[1:0]{
+        IDLE,
+        START,
+        DATA,
+        STOP
+  } state_t;
+    
+    state_t state, next_state;
+  //declaration 
+  always_ff @(posedge clk or negedge rst_n)begin 
+    if(!rst_n)
+         state <= IDLE;
+    else 
+         state <= next_state;
+  end 
+   //nextstate
+
+    always_comb
+     begin
+       next_state <= state;
+       case(state)
+        IDLE:
+          begin 
+            if(tx_start)
+                next_state <= START;
+          end 
+        START:
+          begin 
+            if(baud_tick)
+                 next_state <= DATA;
+          end 
+        DATA:
+          begin 
+            if(baud_tick && (bit_cnt == 3'd7))
+                 next_state <= STOP;
+          end 
+         STOP:
+           begin if(baud_tick)
+                 next_state <= IDLE;
+           end 
+        endcase
+        end 
+  //baud_counter
+        localparam int baud_div = 10416;
+         always_ff @(posedge clk or negedge rst_n)
+           begin
+             if(!rst_n)
+               begin
+                    baud_cnt  <= 16'd0;
+                    baud_tick <= 1'b0;
+              end
+              else if(baud_cnt == baud_div-1)
+                    begin 
+                     baud_cnt <= 16'd0;
+                     baud_cnt <= 1'b1;
+                    end 
+                else 
+                 begin
+                      baud_cnt <= baud_cnt + 16'b1;
+                      baud_tick <= 1'b0;
+                 end 
+                
+           end
+         //bitcounter
+         always_ff @(posedge clk or negedge rst_n)
+           begin
+             if(!rst_n)
+                begin 
+                  bit_cnt <= 3'd0;
+                end 
+             else if (state == IDLE)
+                 begin
+                   bit_cnt <= 3'b0;
+                 end 
+                else 
+                  if(state == DATA && baud_tick == 1)
+                    begin 
+                      bit_cnt <= bit_cnt + 3'd1;
+                    end 
+                   
+                end
+                 //shift register 
+         always_ff @(posedge clk or negedge rst_n)
+           begin 
+             if(!rst_n) 
+                 begin 
+                   shifter <= 3'd0;
+                 end 
+                 else 
+                   begin 
+                     if(state == IDLE && tx_start)
+                       shifter <= data_in;
+                  
+                     else if(state == DATA && baud_tick)
+                     begin 
+                       shifter <= shifter >>1;
+                     end 
+                  end 
+              end 
+         endmodule 
+              //
+
 //==============================================================
 // UART RECEIVER
 //==============================================================
