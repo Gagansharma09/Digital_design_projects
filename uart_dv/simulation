@@ -1,0 +1,25 @@
+xcelium> source /xcelium25.03/tools/xcelium/files/xmsimrc
+xcelium> run
+time = 0,tx = 1
+time = 35,tx = 0
+start BIT has passed
+time = 104205,tx = 1
+data BIT 0,data = 1
+time = 208365,tx = 0
+data BIT 1,data = 0
+time = 312525,tx = 1
+data BIT 2,data = 1
+time = 416685,tx = 0
+data BIT 3,data = 0
+data BIT 4,data = 0
+time = 625005,tx = 1
+data BIT 5,data = 1
+time = 729165,tx = 0
+data BIT 6,data = 0
+time = 833325,tx = 1
+data BIT 7,data = 1
+stop bit has passed
+transmission is completed
+Simulation complete via $finish(1) at time 1041665 NS + 0
+./testbench.sv:58          $finish;
+xcelium> exit
