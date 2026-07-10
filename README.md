@@ -1,4 +1,4 @@
-# Digital Design & Verification — Verilog / SystemVerilog
+# Digital Design & Verification —  SystemVerilog
 
 **Author:** Gagan Sharma (`Gagansharma09`)  
 **Institute:** IIT Madras — BS Electronic Systems  
