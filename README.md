@@ -23,5 +23,5 @@ RISC-V processor design progressing from RTL toward physical implementation and 
 ### 5. Sensor Outlier Detection
 Sensor-data processing project focused on detecting anomalous measurements.
 
-### 6. Earth quake Detection System
+### 6. Earth quake Detection System using zynq based FOGA
 Hardware-oriented part detection and classification system.
