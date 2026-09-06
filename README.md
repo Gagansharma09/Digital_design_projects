@@ -1,29 +1,27 @@
-# Digital Design & Verification —  SystemVerilog
+# Digital Design, Verification & Semiconductor Systems
 
-**Author:** Gagan Sharma (`Gagansharma09`)  
-**Institute:** IIT Madras — BS Electronic Systems  
-**Languages:** Verilog · SystemVerilog  
-**Tools:** Cadence Xcelium · Xilinx Vivado · EDA Playground
+**Author:** Gagan Sharma  
+**GitHub:** [Gagansharma09](https://github.com/Gagansharma09)  
+**Institute:** IIT Madras — BS Electronic Systems
 
----
+A collection of projects covering digital design, SystemVerilog, ASIC design, embedded systems, sensors, and hardware-oriented applications.
 
-## Overview
+## Projects
 
-A collection of digital design and verification projects developed while building practical RTL and SystemVerilog verification skills.
+### 1. UART dv and rtl to gds using 130nm pdk 
+UART design and verification project.
 
-The repository currently covers combinational logic, finite-state machine design, synchronous RTL, and UART protocol implementation and verification.
+### 2. Linux Device Driver
+Linux kernel and device-driver development project.
 
-Projects are developed incrementally with emphasis on understanding RTL architecture, writing testbenches, analyzing simulation waveforms, and implementing self-checking and assertion-based verification.
+### 3. 8-bit ALU — CMOS to GDS
+8-bit ALU implemented from CMOS-level design through physical layout and GDS.
 
----
+### 4. RISC-V — RTL to GDS
+RISC-V processor design progressing from RTL toward physical implementation and GDS.
 
-## Repository Structure
+### 5. Sensor Outlier Detection
+Sensor-data processing project focused on detecting anomalous measurements.
 
-Projects generally follow the structure:
-
-```text
-project_name/
-├── src/        # RTL design files
-├── tb/         # SystemVerilog testbench files
-├── sim/        # Simulation waveforms and results
-└── README.md   # Project documentation
+### 6. Earth quake Detection System
+Hardware-oriented part detection and classification system.
