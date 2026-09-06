@@ -1,69 +1,193 @@
-// Code your testbench here
-// or browse Examples
-//tb
-module tb;
-       logic clk;
-       logic rst_n;
-       logic [7:0]data_in;//8 bit data 
-       logic tx_start;
-       logic tx_busy;
-       logic tx_done;
-       logic tx;
-  
+module uart_tb;
 
-   //dut 
-  uart_tx dut(
+    logic       clk;
+    logic       rst_n;
+    logic [7:0] data_in;
+    logic       tx_start;
+
+    logic [7:0] data_out;
+    logic       tx_busy;
+    logic       tx_done;
+    logic       rx_busy;
+    logic       rx_done;
+
+    localparam int BAUD_DIV = 16;
+
+    //dut
+    uart_top #(
+    .BAUD_DIV(BAUD_DIV)
+) dut (
+
         .clk      (clk),
-
         .rst_n    (rst_n),
-
         .data_in  (data_in),
-
         .tx_start (tx_start),
-
+        .data_out (data_out),
         .tx_busy  (tx_busy),
-
         .tx_done  (tx_done),
+        .rx_busy  (rx_busy),
+        .rx_done  (rx_done)
+    );
 
-        .tx       (tx)
-  );
-   
-        //clock gen 
-       initial begin
-         clk = 1'b0;
-         forever #5 clk = ~clk;
-       end 
+    //CLOCK
 
-       //initilaisation 
-       initial begin 
+    initial begin
+        clk = 1'b0;
+        forever #5 clk = ~clk;
+    end
 
-         rst_n = 1'b0;
+    //CLOCK
 
-         repeat(2) @(posedge clk);
+    initial begin : test
 
-         rst_n = 1'b1;// active low
+        logic [7:0] expected_data;
 
-         repeat(2) @(posedge clk);
+        expected_data = 8'hA5;
 
-         data_in = 8'hA5;
-         tx_start = 1'b1;
-         @(posedge clk);
+        //RESET
 
-         tx_start = 1'b0;
+        rst_n    = 1'b0;
+        data_in  = 8'h00;
+        tx_start = 1'b0;
 
-         wait(tx_done);
+        repeat (2) @(posedge clk);
 
-         repeat(2) @(posedge clk);
+        rst_n = 1'b1;
 
-         $finish;
-       end 
-  //displaying the values of tx (monitoring)
-        initial begin 
-          $monitor("time = %0t,tx = %b",$time,tx);
-        end 
-  //self checking testbench 
-        initial begin 
-          // Detect beginning of START bit
+        repeat (2) @(posedge clk);
+
+//TEST 1
+
+        if (tx_busy !== 1'b0)
+            $error("FAIL 1: TX not idle");
+
+        else
+            $display("PASS 1: TX initially idle");
+
+        //TEST2
+        if (rx_busy !== 1'b0)
+            $error("FAIL 2: RX not idle");
+
+        else
+            $display("PASS 2: RX initially idle");
+
+        //TEST3
+
+        data_in = expected_data;
+//START_TX
+        tx_start = 1'b1;
+
+        @(posedge clk);
+
+        tx_start = 1'b0;
+
+        //TEST3
+        if (tx_busy !== 1'b1)
+            $error("FAIL 3: TX did not become busy");
+
+        else
+            $display("PASS 3: TX started");
+
+        //TEST4
+
+        // Give RX enough time to detect the start bit.
+        repeat (4) @(posedge clk);
+
+        if (rx_busy !== 1'b1)
+            $error("FAIL 4: RX did not detect start bit");
+
+        else
+            $display("PASS 4: RX detected start bit");
+
+        //========================================================
+        // WAIT FOR COMPLETE UART FRAME
+        //
+        // 1 start
+        // 8 data
+        // 1 stop
+        //
+        // Add safety margin.
+        //========================================================
+
+        repeat (BAUD_DIV * 12) @(posedge clk);
+
+        
+        // CHECK 5: TX DONE / IDLE
+        
+
+        if (tx_busy !== 1'b0)
+            $error("FAIL 5: TX still busy after complete frame");
+
+        else
+            $display("PASS 5: TX completed");
+
+        
+        // CHECK 6: RX DONE / IDLE
+
+
+        if (rx_busy !== 1'b0)
+            $error("FAIL 6: RX still busy after complete frame");
+
+        else
+            $display("PASS 6: RX completed");
+
+
+        // CHECK 7: DATA
+    
+
+        if (data_out !== expected_data) begin
+
+            $error(
+                "FAIL 7: Data mismatch. Expected=%h Received=%h",
+                expected_data,
+                data_out
+            );
+
+        end
+        else begin
+
+            $display(
+                "PASS 7: Loopback data correct = %h",
+                data_out
+            );
+
+        end
+
+
+        // FINAL RESULT
+
+
+        $display("--------------------------------------------");
+        $display("       UART TOP LOOPBACK TEST COMPLETE");
+        $display("--------------------------------------------");
+
+        $finish;
+
+    end
+
+    // SAFETY TIMEOUT
+
+
+    initial begin
+
+        #5000;
+
+        $error("SIMULATION TIMEOUT: UART test did not complete");
+
+        $finish;
+
+    end
+
+
+    // MONITOR
+    
+
+    initial begin
+    $monitor("time=%0t data_in=%0h tx_start=%0b tx_busy=%0b tx_done=%0b rx_busy=%0b rx_done=%0b data_out=%0h",
+             $time, data_in, tx_start, tx_busy, tx_done,
+             rx_busy, rx_done, data_out);
+end
+endmodule          // Detect beginning of START bit
 
           @(negedge tx);
 
