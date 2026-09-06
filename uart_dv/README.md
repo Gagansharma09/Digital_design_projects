@@ -1,4 +1,4 @@
-# UART Design and Verification and complete rtl to gds using catalyser tool and skywater 130nm pdk
+# UART Design and Verification and complete RTL to gds using catalyser tool and skywater 130nm pdk
 
 SystemVerilog implementation and verification of a UART transmitter developed to study RTL design, finite-state machine architecture, baud-rate timing, self-checking testbenches, and basic SystemVerilog Assertions (SVA).
 
