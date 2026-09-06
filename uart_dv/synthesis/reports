@@ -1,0 +1,38 @@
+# UART Synthesis Report
+
+## Technology
+- PDK: Sky130
+- Standard Cell Library: sky130_fd_sc_hd
+- Clock Period: 10 ns
+
+## Synthesis Results
+- Cell Count: 292
+- Port Count: 9
+- Port Bits: 23
+- Wire Count: 240
+- Wire Bits: 304
+
+## Area
+- Total Chip Area: 3001.63 µm²
+- Sequential Cell Area: 1752.93 µm²
+- Sequential Area: 58.40%
+
+## Timing
+- Worst Setup Slack: +5.45 ns
+- Worst Hold Slack: +0.89 ns
+- Setup TNS: 0 ns
+- Hold TNS: 0 ns
+
+## Power
+- Total Power: 0.307 mW
+- Sequential Power: 0.261 mW
+- Combinational Power: 0.0467 mW
+- Clock Power: 0 mW
+
+## Checks
+- Synthesis Errors: 0
+- Warnings: 5
+
+## Generated Outputs
+- Synthesized gate-level Verilog netlist
+- Timing constraint file
