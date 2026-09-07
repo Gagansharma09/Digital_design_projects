@@ -8,7 +8,7 @@ A collection of projects covering digital design, SystemVerilog, ASIC design, em
 
 ## Projects
 
-### 1. UART dv and rtl to gds using 130nm pdk 
+### 1. Uart DV and RTL to gds using 130nm pdk 
 ### 2. Linux Device Driver
 ### 3. 8-bit ALU — CMOS to GDS
 ### 4. RISC-V — RTL to GDS
