@@ -1,4 +1,4 @@
-# Digital Design, Verification & Semiconductor Systems
+# Digital Design, Verification & physical design 
 
 **Author:** Gagan Sharma  
 **GitHub:** [Gagansharma09](https://github.com/Gagansharma09)  
