@@ -13,4 +13,4 @@ A collection of projects covering digital design, SystemVerilog, ASIC design, em
 ### 3. 8-bit ALU — CMOS to GDS
 ### 4. RISC-V — RTL to GDS
 ### 5. Sensor Outlier Detection
-### 6. Earth quake Detection System using zynq based FOGA
+### 6. Earth quake Detection System using zynq based FPGA
