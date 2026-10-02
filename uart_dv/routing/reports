@@ -1,0 +1,28 @@
+===== UART ROUTING RESULTS =====
+
+Design Area          : 3438 µm²
+Utilization          : 24%
+Sequential Cells     : 70
+Combinational Cells  : cell
+Total Cells          : 1998
+Setup WNS            : 3.96
+ ns
+Hold WNS             : 0.26
+ ns
+Total Power          : 9.56e-04 W
+Antenna Violations   : [INFO ANT-0002] Found 0 net violations.
+[INFO ANT-0001] Found 0 pin violations.
+
+===== ROUTING DRC =====
+
+===== ROUTING TIMING =====
+report_tns
+report_wns
+report_worst_slack
+
+===== ROUTING CHECKS =====
+unconstraints.rpt:report_checks -unconstrained
+drt_antennas.rpt:[INFO ANT-0002] Found 0 net violations.
+drt_antennas.rpt:[INFO ANT-0001] Found 0 pin violations.
+
+===== END =====
