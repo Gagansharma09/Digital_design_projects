@@ -1,0 +1,2 @@
+
+c2s-nitj-047-gagan-sharma@compcarta-chipin-c2s1:~/my_projects/uart/run/sta/reports$ printf "===== UART POST-ROUTE STA =====\nWNS (Setup) : "; cat all_worst_setup_slack.rpt; printf "TNS (Setup) : "; cat all_tns.rpt; printf "WNS (Hold)  : "; cat all_worst_hold_slack.rpt; printf "DRC/Checks  : "; grep -Ei "0 violations|violations" all_report_checks.rpt | tail -1
