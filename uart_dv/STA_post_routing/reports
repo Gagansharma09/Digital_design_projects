@@ -1,0 +1,15 @@
+===== UART FINAL STA METRICS =====
+
+Worst Setup Slack (WNS) : worst slack max 5.45
+Worst Hold Slack        : worst slack min 0.89
+Total Negative Slack    : tns max 0.00
+Worst Slack              : wns max 0.00
+
+--- SLOW CORNER ---
+Setup Timing            :                                   8.44   slack (MET)
+Hold Timing             :                                   1.35   slack (MET)
+Power                   : Total                  3.12e-04   6.75e-05   1.89e-10   3.80e-04 100.0%
+
+--- CHECKS ---
+all_report_checks.rpt:Warning: There are 10 input ports missing set_input_delay.
+all_report_checks.rpt:Warning: There are 12 unconstrained endpoints.
