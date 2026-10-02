@@ -1,0 +1,8 @@
+Design Area: 3002 µm²
+Utilization: 21%
+Sequential Cells: 70
+Combinational Cells: cell
+Total Cells: 476
+Setup Slack: 5.45
+ nsHold Slack: 0.29
+ nsPower: 6.01e-04 W
