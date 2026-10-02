@@ -1,0 +1,24 @@
+===== UART FLOORPLAN OUTPUTS =====
+
+initial_fp.def                   88K
+initial_fp.odb                  1.9M
+initial_fp.sdc                  4.0K
+tapcell.def                     108K
+tapcell.odb                     2.0M
+pdn.def                         180K
+pdn.odb                         2.0M
+uart_top.def                    184K
+uart_top.odb                    2.0M
+uart_top.sdc                    4.0K
+uart_top.nl.v                    56K
+uart_top.pnl.v                   80K
+
+===== FINAL FLOORPLAN =====
+DEF      : uart_top.def
+ODB      : uart_top.odb
+SDC      : uart_top.sdc
+Netlist  : uart_top.nl.v
+PG Netlist: uart_top.pnl.v
+PDN      : pdn.def / pdn.odb
+Tapcells : tapcell.def / tapcell.odb
+==================================
